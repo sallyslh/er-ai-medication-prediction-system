@@ -47,7 +47,7 @@ No training happens here.
 4. Final Gradio Application + Drug Preparation Model
 
 File: Final_Gradio.py
-Original Colab: [https://colab.research.google.com/drive/1GEIpGhI99EMSBwb9lvYC0-MKX4qpFHVj?usp=sharing](https://colab.research.google.com/drive/1ewjC4xWFc3OB2Cckjse1vrPRZyWbxi_M?usp=drive_link)
+Original Colab: https://colab.research.google.com/drive/1Da10YbvN3pvWun3syA-_SKa20LlY07Gq?usp=sharing
 
 (Same Colab also includes the drug prediction training section.)
 
