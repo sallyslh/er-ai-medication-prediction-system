@@ -24,6 +24,7 @@ The final LoRA weights produced here are used later in testing and in the Gradio
 
 File: DrugBank_LogReg_Testing.py
 Original Colab: https://colab.research.google.com/drive/1GEBurh1oFOcqAP8Gkmqvl5Otqr-vAVGI?usp=sharing
+colab to choose the optimal parameters:https://colab.research.google.com/drive/1GThu6JIubccz_P1j6Zs0Cb4fXKojcmIs?usp=sharing
 
 This notebook tests an earlier version of the DrugBank model using TF-IDF and Logistic Regression.
 It was part of the experimentation phase and helped compare classical ML results before selecting the final similarity-based approach.
