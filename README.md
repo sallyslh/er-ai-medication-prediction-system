@@ -1,41 +1,67 @@
 # Repository Structure — AI Emergency Room Medication & Safety Advisor
 
-This repository contains four Google Colab notebooks. Each notebook corresponds to one stage of the system.
-Throughout the project, several models and approaches were tested. After comparing all results, these four notebooks represent the final, most stable setup.
+This repository contains four Google Colab notebooks. Each notebook represents one stage of the system.
+Throughout the project, many different models and approaches were tested. After comparing all results, these four notebooks form the final and most stable setup.
 
-All datasets (FAERS, DrugBank, interaction rules) are stored on Google Drive, and every notebook includes Drive mounting instructions.
+All datasets (FAERS, DrugBank, interaction rules) are stored on Google Drive, and each notebook includes the standard Drive mounting:
 
-1. FAERS Model — Testing Notebook
+from google.colab import drive
+drive.mount('/content/drive')
 
-File: FAERS_Model_Testing.ipynb
 
-This notebook loads the FAERS model trained on Meditron using LoRA and evaluates it. It is used to test:
+No manual downloading is needed.
+
+1. FAERS Model — Training Notebook (Meditron + LoRA)
+
+File: FAERS_Training_Meditron.py
+Original Colab: https://colab.research.google.com/drive/1ewjC4xWFc3OB2Cckjse1vrPRZyWbxi_M?usp=sharing
+
+This notebook trains the FAERS model using Meditron-7B with LoRA.
+It loads the cleaned FAERS dataset from Drive and performs full fine-tuning.
+The final LoRA weights produced here are used later in testing and in the Gradio application.
+
+2. DrugBank Model — Logistic Regression Testing Notebook
+
+File: DrugBank_LogReg_Testing.py
+Original Colab: https://colab.research.google.com/drive/1GEBurh1oFOcqAP8Gkmqvl5Otqr-vAVGI?usp=sharing
+
+This notebook tests an earlier version of the DrugBank model using TF-IDF and Logistic Regression.
+It was part of the experimentation phase and helped compare classical ML results before selecting the final similarity-based approach.
+
+3. FAERS Model — Testing Notebook
+
+File: FAERS_Model_Testing.py
+Original Colab: https://colab.research.google.com/drive/1GEIpGhI99EMSBwb9lvYC0-MKX4qpFHVj?usp=sharing
+
+This notebook loads the trained FAERS Meditron model with its LoRA weights and is used only for testing and debugging.
+It checks:
 
 Adverse reaction predictions
 
-Behavior with different drug lists, ages, and sexes
+How the model behaves with different drug lists, ages, and sexes
 
-Whether the LoRA weights are applied correctly
+Whether the LoRA weights are correctly applied
 
-This notebook does not train the model; it is only for testing and debugging.
+No training happens here.
 
-2. Final Gradio App + Drug Preparation Model Notebook
+4. Final Gradio Application + Drug Preparation Model
 
-File: Final_Gradio_And_DrugModel.ipynb
+File: Final_Gradio.py
+Original Colab: https://colab.research.google.com/drive/1GEIpGhI99EMSBwb9lvYC0-MKX4qpFHVj?usp=sharing
 
-This is the main application notebook. It integrates all components into one system.
+(Same Colab also includes the drug prediction training section.)
 
-Included components:
+This is the main application notebook. It includes:
 
-DrugBank medication recommendation model (similarity-based)
+Drug recommendation model (TF-IDF + SVD similarity)
 
-FAERS adverse reaction prediction model (Meditron + LoRA)
+FAERS model (Meditron + LoRA) for adverse reaction prediction
 
 Rule-based drug interaction checker
 
-Gradio interface for user interaction
+Complete Gradio interface
 
-User inputs:
+User Inputs:
 
 Symptoms
 
@@ -53,62 +79,13 @@ Predicted adverse reactions
 
 Interaction warnings
 
-This notebook represents the complete ER decision-support system.
+This notebook represents the full ER decision-support system.
 
-3. DrugBank Model — Logistic Regression Testing Notebook
+Final Models Used in the System
+1. Medication Recommendation Model
 
-File: DrugBank_LogReg_Testing.ipynb
+A similarity-based model using TF-IDF and SVD to match symptom text to the most suitable medications.
 
-This notebook tests an earlier machine-learning version of the DrugBank model that uses:
+2. Adverse Reaction Prediction Model
 
-TF-IDF features
-
-Logistic Regression
-
-Symptom-to-medication classification
-
-It was part of the experimentation phase. The results helped in comparing different models before selecting the final similarity-based approach.
-
-4. FAERS Model — Training Notebook (Meditron LoRA)
-
-File: FAERS_Training_Meditron.ipynb
-
-This notebook trains the FAERS model using:
-
-Meditron-7B as the base model
-
-LoRA adapters for efficient fine-tuning
-
-FAERS dataset loaded from Google Drive
-
-The resulting LoRA weights are later used in the testing notebook and in the final Gradio application.
-
-Datasets
-
-All datasets used by the project are stored on Google Drive:
-
-FAERS cleaned dataset
-
-DrugBank indications dataset
-
-Drug interaction rules (CSV)
-
-Every notebook includes the following:
-
-from google.colab import drive
-drive.mount('/content/drive')
-
-
-No manual downloading is required.
-
-Final Models Used
-
-After experimenting with multiple architectures, classical ML methods, and different LLM setups, the following models were chosen as the final version of the system:
-
-1. Drug Model (Medication Recommendation)
-
-A similarity-based model using TF-IDF and SVD to match symptom descriptions to the most suitable medications.
-
-2. FAERS Model (Adverse Reaction Prediction)
-
-Meditron-7B fine-tuned with LoRA on FAERS adverse event data to predict likely side effects and safety issues based on drug list, age, and sex.
+Meditron-7B fine-tuned with LoRA on the FAERS dataset, predicting likely adverse reactions based on the patient’s drug list, age, and sex.
